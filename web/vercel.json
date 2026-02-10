@@ -1,0 +1,20 @@
+{
+  "crons": [
+    {
+      "path": "/api/meta/sync?levels=campaign&days=1",
+      "schedule": "5 * * * *"
+    },
+    {
+      "path": "/api/meta/sync?levels=adset&days=1",
+      "schedule": "10 * * * *"
+    },
+    {
+      "path": "/api/meta/sync?levels=ad&days=1",
+      "schedule": "15 * * * *"
+    },
+    {
+      "path": "/api/meta/sync?levels=platform&days=1",
+      "schedule": "20 * * * *"
+    }
+  ]
+}

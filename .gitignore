@@ -1,0 +1,14 @@
+# IDE / local
+.cursor/
+.DS_Store
+*.log
+
+# Dependencies and build (web)
+web/node_modules/
+web/.next/
+web/out/
+web/build/
+web/.vercel/
+web/.env*
+*.tsbuildinfo
+web/next-env.d.ts

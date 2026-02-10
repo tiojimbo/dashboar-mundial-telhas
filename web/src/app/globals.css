@@ -1,0 +1,50 @@
+/* Phosphor Icons – alternativa gratuita a SF Pro Icons (webfont) – @import primeiro (exigência do CSS) */
+@import url("https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/regular/style.css");
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  /* Alternativas gratuitas às SF Pro: Inter (Display/Text), Phosphor (Icons) */
+  --font-display: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-text: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-icons: "Phosphor", var(--font-inter), ui-sans-serif, sans-serif;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-text);
+  --font-display: var(--font-display);
+  --font-mono: ui-monospace, "Cascadia Code", "Consolas", monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-text);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+}
+
+.font-icons {
+  font-family: var(--font-icons);
+}
+
+/* Esconde a scrollbar nativa do viewport do Radix Scroll Area – só a barra do componente aparece */
+[data-radix-scroll-area-viewport] {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+[data-radix-scroll-area-viewport]::-webkit-scrollbar {
+  display: none;
+}
