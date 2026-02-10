@@ -246,9 +246,18 @@ export default function Home() {
   const metaLoadingRef = useRef(false);
   const leadsLoadingRef = useRef(false);
 
+  const skipFirstSaveRef = useRef(true);
   useEffect(() => {
     setGoals(loadGoalsFromStorage());
   }, []);
+
+  useEffect(() => {
+    if (skipFirstSaveRef.current) {
+      skipFirstSaveRef.current = false;
+      return;
+    }
+    saveGoalsToStorage(goals);
+  }, [goals]);
 
   useEffect(() => {
     const cached = getCached<{ today: MetricsAgg; total: MetricsAgg }>(CACHE_KEYS.metrics);
@@ -620,10 +629,6 @@ export default function Home() {
       subtitle: "",
     },
   ];
-
-  useEffect(() => {
-    saveGoalsToStorage(goals);
-  }, [goals]);
 
   const updateGoal = useCallback((id: string, updates: Partial<Pick<GoalCard, "title" | "target">>) => {
     setGoals((prev) => prev.map((g) => (g.id === id ? { ...g, ...updates } : g)));
