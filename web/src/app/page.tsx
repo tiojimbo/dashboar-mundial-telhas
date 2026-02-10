@@ -1213,8 +1213,13 @@ type LeadsModalProps = {
   champions?: Champions;
 };
 
+/** Formata data/hora em horário de São Paulo. Se o valor não tem timezone, trata como BRT (-03:00). */
 function fmtDateTime(value: string): string {
-  const d = new Date(value);
+  let toParse = value.trim();
+  if (!/Z|[+-]\d{2}:?\d{2}$/.test(toParse) && /^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}/.test(toParse)) {
+    toParse = toParse.replace(" ", "T") + "-03:00";
+  }
+  const d = new Date(toParse);
   if (Number.isNaN(d.getTime())) return value;
   return d.toLocaleString("pt-BR", {
     day: "2-digit",
