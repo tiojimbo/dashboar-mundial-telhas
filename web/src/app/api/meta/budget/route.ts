@@ -31,7 +31,9 @@ export async function GET() {
     // Override opcional: META_AVAILABLE_BALANCE_OVERRIDE (ex.: 3025) quando a API não reflete o saldo real.
     const overrideStr = process.env.META_AVAILABLE_BALANCE_OVERRIDE?.trim();
     const override =
-      overrideStr !== "" ? parseFloat(overrideStr.replace(",", ".")) : undefined;
+      overrideStr && overrideStr !== ""
+        ? parseFloat(overrideStr.replace(",", "."))
+        : undefined;
     const hasOverride = typeof override === "number" && Number.isFinite(override) && override >= 0;
 
     const div = 100;

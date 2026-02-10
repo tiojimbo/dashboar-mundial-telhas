@@ -1,7 +1,15 @@
 "use client";
 
 import { type CSSProperties, useState, useCallback, useEffect, useRef } from "react";
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Sector } from "recharts";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+  Sector,
+  type PieSectorDataItem,
+} from "recharts";
 import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -162,7 +170,7 @@ const PIE_TOOLTIP_WRAPPER_STYLE: CSSProperties = {
 };
 
 /** Fatia ativa: destaque (leve “pop-out”) ao passar o mouse; retorna elemento React (Recharts 3) */
-function pieActiveShape(props: Record<string, unknown>) {
+function pieActiveShape(props: PieSectorDataItem) {
   const base = typeof props.outerRadius === "number" ? props.outerRadius : 52;
   return <Sector {...props} outerRadius={base + 10} />;
 }
@@ -537,10 +545,11 @@ export default function Home() {
       subtitle: "",
       onClick: openLeadsModal,
     },
-    { title: "Investido Hoje", value: fmtMoney(t.spend) },
+    { title: "Investido Hoje", value: fmtMoney(t.spend), subtitle: "" },
     {
       title: "CPL Hoje",
       value: typeof t.cost_per_result === "number" && t.cost_per_result > 0 ? fmtMoney(t.cost_per_result) : t.leads ? fmtMoney(t.spend / t.leads) : "R$ 0,00",
+      subtitle: "",
     },
   ];
   const currentLeadsForGoals = tot.leads;
@@ -604,10 +613,11 @@ export default function Home() {
 
   const totalCards: MetricCardProps[] = [
     { title: "Leads totais", value: String(totForDisplay.leads), subtitle: "", onClick: openLeadsTotalModal },
-    { title: "Investimento total", value: fmtMoney(totForDisplay.spend) },
+    { title: "Investimento total", value: fmtMoney(totForDisplay.spend), subtitle: "" },
     {
       title: "CPL Geral",
-      value: totForDisplay.leads > 0 ? fmtMoney(totForDisplay.cost_per_result) : "R$ 0,00",
+      value: totForDisplay.leads > 0 ? fmtMoney(totForDisplay.cost_per_result ?? 0) : "R$ 0,00",
+      subtitle: "",
     },
   ];
 
