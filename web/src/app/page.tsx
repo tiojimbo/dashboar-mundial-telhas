@@ -229,6 +229,9 @@ export default function Home() {
   const [metaCampaignsApi, setMetaCampaignsApi] = useState<{ items: MetaListItem[] } | null>(null);
   const [metaAdSetsApi, setMetaAdSetsApi] = useState<{ items: MetaListItem[] } | null>(null);
   const [metaAdsApi, setMetaAdsApi] = useState<{ items: MetaListItem[] } | null>(null);
+  const [metaCampaignsToday, setMetaCampaignsToday] = useState<{ items: MetaListItem[] } | null>(null);
+  const [metaAdSetsToday, setMetaAdSetsToday] = useState<{ items: MetaListItem[] } | null>(null);
+  const [metaAdsToday, setMetaAdsToday] = useState<{ items: MetaListItem[] } | null>(null);
   const [refreshTick, setRefreshTick] = useState(0);
   const [leadsToday, setLeadsToday] = useState<LeadMessageRow[] | null>(null);
   const [leadsTodayTotal, setLeadsTodayTotal] = useState<number | null>(null);
@@ -378,6 +381,53 @@ export default function Home() {
     };
     load();
     const id = setInterval(load, REFRESH_MS);
+    document.addEventListener("visibilitychange", handleVisibility);
+    return () => {
+      isMounted = false;
+      clearInterval(id);
+      document.removeEventListener("visibilitychange", handleVisibility);
+    };
+  }, [refreshTick]);
+
+  useEffect(() => {
+    const todayStr = (() => {
+      try {
+        return new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo" }).format(new Date());
+      } catch {
+        return new Date().toISOString().slice(0, 10);
+      }
+    })();
+    const base = `/api/meta/insights?objective=ENGAGEMENT&status=ACTIVE&date_from=${todayStr}&date_to=${todayStr}`;
+    let isMounted = true;
+    const loadToday = async () => {
+      if (!isMounted || document.visibilityState === "hidden") return;
+      try {
+        const [campaignRes, adsetRes, adRes] = await Promise.all([
+          fetch(`${base}&level=campaign`, FETCH_OPTIONS),
+          fetch(`${base}&level=adset`, FETCH_OPTIONS),
+          fetch(`${base}&level=ad`, FETCH_OPTIONS),
+        ]);
+        if (campaignRes.ok) {
+          const d = await campaignRes.json();
+          if (isMounted && Array.isArray(d.items)) setMetaCampaignsToday({ items: d.items });
+        }
+        if (adsetRes.ok) {
+          const d = await adsetRes.json();
+          if (isMounted && Array.isArray(d.items)) setMetaAdSetsToday({ items: d.items });
+        }
+        if (adRes.ok) {
+          const d = await adRes.json();
+          if (isMounted && Array.isArray(d.items)) setMetaAdsToday({ items: d.items });
+        }
+      } catch {
+        // ignore
+      }
+    };
+    const handleVisibility = () => {
+      if (document.visibilityState === "visible") loadToday();
+    };
+    loadToday();
+    const id = setInterval(loadToday, REFRESH_MS);
     document.addEventListener("visibilitychange", handleVisibility);
     return () => {
       isMounted = false;
@@ -1036,9 +1086,9 @@ export default function Home() {
           leads={leadsToday ?? []}
           onClose={closeLeadsModal}
           champions={{
-            criativo: championFromItems(metaAdsApi?.items ?? []),
-            campanha: championFromItems(metaCampaignsApi?.items ?? []),
-            conjunto: championFromItems(metaAdSetsApi?.items ?? []),
+            criativo: championFromItems(metaAdsToday?.items ?? []),
+            campanha: championFromItems(metaCampaignsToday?.items ?? []),
+            conjunto: championFromItems(metaAdSetsToday?.items ?? []),
           }}
         />
       )}
@@ -1172,6 +1222,7 @@ function fmtDateTime(value: string): string {
     year: "numeric",
     hour: "2-digit",
     minute: "2-digit",
+    timeZone: "America/Sao_Paulo",
   });
 }
 
