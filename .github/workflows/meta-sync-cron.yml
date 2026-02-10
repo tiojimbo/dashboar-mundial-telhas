@@ -1,0 +1,18 @@
+name: Meta Ads Sync (Cron)
+
+on:
+  schedule:
+    # Roda a cada hora, no minuto 5 (UTC)
+    - cron: '5 * * * *'
+  workflow_dispatch: # Permite execução manual
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sync Meta Ads data
+        run: |
+          BASE="${{ vars.VERCEL_APP_URL }}"
+          for level in campaign adset ad platform; do
+            curl -sf -o /dev/null "${BASE}/api/meta/sync?levels=${level}\&days=1" || true
+          done
