@@ -48,3 +48,15 @@ h1, h2, h3, h4, h5, h6 {
 [data-radix-scroll-area-viewport]::-webkit-scrollbar {
   display: none;
 }
+
+/* Mobile: evita zoom em inputs e melhora touch */
+@media (max-width: 640px) {
+  input, select, textarea, button {
+    font-size: 16px; /* Evita zoom no iOS ao focar input */
+  }
+}
+
+/* Tooltip dos gráficos: menor em mobile */
+.pie-tooltip {
+  max-width: min(380px, calc(100vw - 32px));
+}

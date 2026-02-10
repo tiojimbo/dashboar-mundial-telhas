@@ -127,9 +127,9 @@ function PieChartTooltip({
   const fill = data?.fill;
   return (
     <div
-      className="rounded-lg border border-slate-200 bg-white px-4 py-3 shadow-lg"
+      className="pie-tooltip rounded-lg border border-slate-200 bg-white px-3 py-2 shadow-lg sm:px-4 sm:py-3"
       style={{
-        minWidth: 220,
+        minWidth: 180,
         maxWidth: 380,
         width: "max-content",
         wordBreak: "break-word",
@@ -160,12 +160,12 @@ const PIE_TOOLTIP_WRAPPER_STYLE: CSSProperties = {
   position: "absolute",
   left: "auto",
   right: "100%",
-  marginRight: 12,
+  marginRight: 8,
   top: "50%",
   transform: "translateY(-50%)",
   outline: "none",
-  maxWidth: "none",
-  minWidth: 220,
+  maxWidth: "min(380px, calc(100vw - 24px))",
+  minWidth: 160,
   pointerEvents: "none",
 };
 
@@ -647,14 +647,14 @@ export default function Home() {
   const campaignSectionSubtitle = "";
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-slate-50 text-slate-900">
+    <div className="flex min-h-dvh flex-col overflow-hidden bg-slate-50 text-slate-900">
       <header className="shrink-0 border-b border-slate-200 bg-white">
-        <div className="mx-auto flex w-full max-w-6xl justify-center px-6 py-5">
-          <div className="flex items-center gap-2 rounded-full bg-slate-100 p-1 text-sm font-medium">
-            <button className="rounded-full bg-white px-4 py-2 text-slate-900 shadow-sm">
+        <div className="mx-auto flex w-full max-w-6xl justify-center px-4 py-3 sm:px-6 sm:py-4">
+          <div className="flex items-center gap-1 rounded-full bg-slate-100 p-1 text-xs font-medium sm:gap-2 sm:text-sm">
+            <button className="rounded-full bg-white px-3 py-1.5 text-slate-900 shadow-sm sm:px-4 sm:py-2">
               Meta Ads
             </button>
-            <button className="rounded-full px-4 py-2 text-slate-500 hover:text-slate-900">
+            <button className="rounded-full px-3 py-1.5 text-slate-500 hover:text-slate-900 sm:px-4 sm:py-2">
               Google Ads
             </button>
           </div>
@@ -662,7 +662,7 @@ export default function Home() {
       </header>
 
       <ScrollArea className="min-h-0 flex-1">
-        <main className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 py-8">
+        <main className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-6 sm:gap-8 sm:px-6 sm:py-8 lg:gap-10">
         <section className="space-y-4">
           <SectionHeader title="Métricas de hoje" subtitle="" />
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -675,7 +675,8 @@ export default function Home() {
         <section className="space-y-4">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <SectionHeader title="Métricas gerais" subtitle="" />
-            <div className="flex shrink-0 rounded-lg border border-slate-200 bg-slate-100 p-0.5">
+            <div className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
+              <div className="flex w-max shrink-0 gap-1 rounded-lg border border-slate-200 bg-slate-100 p-0.5 sm:w-auto">
               {(
                 [
                   { value: "este_mes" as const, label: "Este Mês" },
@@ -688,7 +689,7 @@ export default function Home() {
                   key={value}
                   type="button"
                   onClick={() => setGeneralPeriod((p) => (p === value ? null : value))}
-                  className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+                  className={`rounded-md px-2 py-1.5 text-xs font-medium transition-colors sm:px-3 sm:py-2 sm:text-sm ${
                     generalPeriod === value
                       ? "bg-slate-800 text-white shadow-sm"
                       : "bg-transparent text-slate-600 hover:bg-slate-200 hover:text-slate-900"
@@ -697,6 +698,7 @@ export default function Home() {
                   {label}
                 </button>
               ))}
+              </div>
             </div>
           </div>
           <div className="grid gap-4 sm:grid-cols-1 lg:grid-cols-3">
@@ -747,7 +749,7 @@ export default function Home() {
             <button
               type="button"
               onClick={addGoal}
-              className="flex min-h-[180px] flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50/50 text-slate-500 transition-colors hover:border-slate-300 hover:bg-slate-50 hover:text-slate-700"
+              className="flex min-h-[140px] flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50/50 text-slate-500 transition-colors active:scale-[0.98] hover:border-slate-300 hover:bg-slate-50 hover:text-slate-700 sm:min-h-[180px]"
             >
               <span className="text-2xl">+</span>
               <span className="mt-1 text-sm font-medium">Adicionar meta</span>
@@ -757,10 +759,10 @@ export default function Home() {
 
         <section className="space-y-4">
           <SectionHeader title="Criativos" subtitle="" />
-          <div className="rounded-2xl border border-slate-200 bg-white p-6 lg:p-8">
-            <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:justify-end">
-              <div className="flex shrink-0 items-center overflow-visible pt-4 lg:pt-0 lg:pl-[260px]">
-                <div className="relative flex h-72 w-72 cursor-pointer items-center justify-center overflow-visible">
+          <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-6 lg:p-8">
+            <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-end lg:gap-10">
+              <div className="flex shrink-0 items-center justify-center overflow-visible pt-2 lg:pt-0 lg:pl-[260px]">
+                <div className="relative flex h-48 w-48 cursor-pointer items-center justify-center overflow-visible sm:h-64 sm:w-64 lg:h-72 lg:w-72">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart margin={{ top: 0, left: 0, right: 0, bottom: 0 }}>
                       <Pie
@@ -793,11 +795,12 @@ export default function Home() {
                   </ResponsiveContainer>
                 </div>
               </div>
-              <ScrollArea className="h-[360px] min-w-0 flex-1 lg:ml-14 lg:max-w-2xl">
-                <table className="w-full table-fixed text-left text-sm text-slate-600">
+              <ScrollArea className="h-[260px] min-w-0 flex-1 sm:h-[320px] lg:ml-14 lg:h-[360px] lg:max-w-2xl">
+                <div className="overflow-x-auto">
+                <table className="w-full min-w-[200px] table-fixed text-left text-sm text-slate-600">
                   <colgroup>
                     <col className="w-full" />
-                    <col className="w-28" />
+                    <col className="w-24 sm:w-28" />
                   </colgroup>
                   <thead className="bg-slate-50 text-xs uppercase text-slate-500">
                     <tr>
@@ -822,6 +825,7 @@ export default function Home() {
                     ))}
                   </tbody>
                 </table>
+                </div>
               </ScrollArea>
             </div>
           </div>
@@ -829,10 +833,10 @@ export default function Home() {
 
         <section className="space-y-4">
           <SectionHeader title={campaignSectionTitle} subtitle={campaignSectionSubtitle} />
-          <div className="rounded-2xl border border-slate-200 bg-white p-6 lg:p-8">
-            <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:justify-end">
-              <div className="flex shrink-0 items-center overflow-visible pt-4 lg:pt-0 lg:pl-[260px]">
-                <div className="relative flex h-72 w-72 cursor-pointer items-center justify-center overflow-visible">
+          <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-6 lg:p-8">
+            <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-end lg:gap-10">
+              <div className="flex shrink-0 items-center justify-center overflow-visible pt-2 lg:pt-0 lg:pl-[260px]">
+                <div className="relative flex h-48 w-48 cursor-pointer items-center justify-center overflow-visible sm:h-64 sm:w-64 lg:h-72 lg:w-72">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart margin={{ top: 0, left: 0, right: 0, bottom: 0 }}>
                       <Pie
@@ -865,11 +869,12 @@ export default function Home() {
                   </ResponsiveContainer>
                 </div>
               </div>
-              <ScrollArea className="h-[360px] min-w-0 flex-1 lg:ml-14 lg:max-w-2xl">
-                <table className="w-full table-fixed text-left text-sm text-slate-600">
+              <ScrollArea className="h-[260px] min-w-0 flex-1 sm:h-[320px] lg:ml-14 lg:h-[360px] lg:max-w-2xl">
+                <div className="overflow-x-auto">
+                <table className="w-full min-w-[200px] table-fixed text-left text-sm text-slate-600">
                   <colgroup>
                     <col className="w-full" />
-                    <col className="w-28" />
+                    <col className="w-24 sm:w-28" />
                   </colgroup>
                   <thead className="bg-slate-50 text-xs uppercase text-slate-500">
                     <tr>
@@ -894,6 +899,7 @@ export default function Home() {
                     ))}
                   </tbody>
                 </table>
+                </div>
               </ScrollArea>
             </div>
           </div>
@@ -901,10 +907,10 @@ export default function Home() {
 
         <section className="space-y-4">
           <SectionHeader title="Conjuntos" subtitle="" />
-          <div className="rounded-2xl border border-slate-200 bg-white p-6 lg:p-8">
-            <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:justify-end">
-              <div className="flex shrink-0 items-center overflow-visible pt-4 lg:pt-0 lg:pl-[260px]">
-                <div className="relative flex h-72 w-72 cursor-pointer items-center justify-center overflow-visible">
+          <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-6 lg:p-8">
+            <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-end lg:gap-10">
+              <div className="flex shrink-0 items-center justify-center overflow-visible pt-2 lg:pt-0 lg:pl-[260px]">
+                <div className="relative flex h-48 w-48 cursor-pointer items-center justify-center overflow-visible sm:h-64 sm:w-64 lg:h-72 lg:w-72">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart margin={{ top: 0, left: 0, right: 0, bottom: 0 }}>
                       <Pie
@@ -937,11 +943,12 @@ export default function Home() {
                   </ResponsiveContainer>
                 </div>
               </div>
-              <ScrollArea className="h-[360px] min-w-0 flex-1 lg:ml-14 lg:max-w-2xl">
-                <table className="w-full table-fixed text-left text-sm text-slate-600">
+              <ScrollArea className="h-[260px] min-w-0 flex-1 sm:h-[320px] lg:ml-14 lg:h-[360px] lg:max-w-2xl">
+                <div className="overflow-x-auto">
+                <table className="w-full min-w-[200px] table-fixed text-left text-sm text-slate-600">
                   <colgroup>
                     <col className="w-full" />
-                    <col className="w-28" />
+                    <col className="w-24 sm:w-28" />
                   </colgroup>
                   <thead className="bg-slate-50 text-xs uppercase text-slate-500">
                     <tr>
@@ -966,6 +973,7 @@ export default function Home() {
                     ))}
                   </tbody>
                 </table>
+                </div>
               </ScrollArea>
             </div>
           </div>
@@ -1055,8 +1063,8 @@ export default function Home() {
 function SectionHeader({ title, subtitle }: { title: string; subtitle: string }) {
   return (
     <div className="space-y-1">
-      <h2 className="text-xl font-semibold text-slate-900">{title}</h2>
-      <p className="text-sm text-slate-500">{subtitle}</p>
+      <h2 className="text-lg font-semibold text-slate-900 sm:text-xl">{title}</h2>
+      {subtitle ? <p className="text-sm text-slate-500">{subtitle}</p> : null}
     </div>
   );
 }
@@ -1065,8 +1073,8 @@ function MetricCard({ title, value, subtitle, onClick }: MetricCardProps) {
   const isClickable = typeof onClick === "function";
   return (
     <div
-      className={`rounded-2xl border border-slate-200 bg-white p-5 shadow-sm ${
-        isClickable ? "cursor-pointer transition hover:border-slate-300 hover:shadow-md" : ""
+      className={`rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5 ${
+        isClickable ? "cursor-pointer transition hover:border-slate-300 hover:shadow-md active:scale-[0.98]" : ""
       }`}
       onClick={onClick}
       role={isClickable ? "button" : undefined}
@@ -1082,7 +1090,7 @@ function MetricCard({ title, value, subtitle, onClick }: MetricCardProps) {
       <div>
         <p className="text-xs font-semibold text-slate-900">{title}</p>
       </div>
-      <p className="mt-3 text-2xl font-semibold text-slate-900">{value}</p>
+      <p className="mt-2 text-xl font-semibold text-slate-900 sm:mt-3 sm:text-2xl">{value}</p>
       <p className="mt-1 text-sm text-slate-500">{subtitle}</p>
     </div>
   );
@@ -1112,12 +1120,12 @@ function DayMetricCard({ title, badge, badgeClassName, day, order }: DayMetricCa
     : null;
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <p className="text-sm font-semibold text-slate-800">{title}</p>
+        <p className="text-xs font-semibold text-slate-800 sm:text-sm">{title}</p>
         <span className={`rounded px-2 py-0.5 text-xs font-medium ${badgeClassName}`}>{badge}</span>
       </div>
-      <p className="mt-3 text-xl font-bold text-slate-900">
+      <p className="mt-2 text-lg font-bold text-slate-900 sm:mt-3 sm:text-xl">
         {day ? fmtDateShort(day.date) : "—"}
       </p>
       <div className="mt-3 flex flex-wrap gap-4">
@@ -1312,12 +1320,12 @@ function LeadsModal({ title, leads, onClose, loading = false, selectedLabel, sel
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-slate-900/50 p-0 sm:items-center sm:p-4" onClick={onClose}>
       <div
-        className="flex h-[90vh] max-h-[90vh] w-full max-w-[1400px] flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl"
+        className="flex h-[95dvh] w-full max-w-[1400px] flex-col overflow-hidden rounded-t-2xl border border-slate-200 bg-white shadow-xl sm:h-[90vh] sm:max-h-[90vh] sm:rounded-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex shrink-0 items-center justify-between border-b border-slate-200 bg-white px-6 py-4">
+        <div className="flex shrink-0 items-center justify-between border-b border-slate-200 bg-white px-4 py-3 sm:px-6 sm:py-4">
           <h3 className="text-lg font-semibold text-slate-900">{title}</h3>
           <button
             type="button"
@@ -1329,7 +1337,7 @@ function LeadsModal({ title, leads, onClose, loading = false, selectedLabel, sel
           </button>
         </div>
         {(selectedLabel != null && selectedValue != null) && (
-          <div className="shrink-0 border-b border-slate-200 bg-slate-50 px-6 py-3">
+          <div className="shrink-0 border-b border-slate-200 bg-slate-50 px-4 py-3 sm:px-6">
             <div className="flex items-center gap-3 rounded-lg border border-slate-200 bg-white px-3 py-2">
               <span className="min-w-0 flex-1">
                 <span className="text-xs font-medium uppercase text-slate-500">{selectedLabel} </span>
@@ -1340,13 +1348,13 @@ function LeadsModal({ title, leads, onClose, loading = false, selectedLabel, sel
                 <span className="text-sm font-semibold text-slate-900">{filteredLeads.length}</span>
               </span>
             </div>
-            <div className="mt-3 flex flex-wrap gap-2">
+            <div className="mt-3 flex flex-nowrap gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible sm:pb-0">
               {periodButtons.map(({ value, label }) => (
                 <button
                   key={value}
                   type="button"
                   onClick={() => setPeriod(value)}
-                  className={`rounded-lg border px-4 py-2 text-sm font-medium transition-colors ${
+                  className={`shrink-0 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors sm:px-4 sm:py-2 sm:text-sm ${
                     period === value
                       ? "border-blue-500 bg-blue-500 text-white"
                       : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
@@ -1381,7 +1389,7 @@ function LeadsModal({ title, leads, onClose, loading = false, selectedLabel, sel
           </div>
         )}
         <ScrollArea className="min-h-0 flex-1 overflow-hidden">
-          <div className="p-6">
+          <div className="p-4 sm:p-6">
             {champions != null && (
               <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
                 <div>
@@ -1494,7 +1502,7 @@ function ProgressCard({ id, title, target, current, onUpdate, onRemove, canRemov
   const fmtNum = (n: number) => new Intl.NumberFormat("pt-BR").format(n);
 
   return (
-    <div className="relative rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div className="relative rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
       <button
         type="button"
         onClick={() => onRemove(id)}
@@ -1514,7 +1522,7 @@ function ProgressCard({ id, title, target, current, onUpdate, onRemove, canRemov
           suppressHydrationWarning
         />
       </h3>
-      <p className="mt-3 text-2xl font-bold text-slate-900">
+      <p className="mt-2 text-xl font-bold text-slate-900 sm:mt-3 sm:text-2xl">
         {fmtNum(current)} / {fmtNum(safeTarget)}
       </p>
       <Progress
