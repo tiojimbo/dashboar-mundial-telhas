@@ -79,10 +79,14 @@ export async function GET(request: Request) {
     const q = quoteId;
     const wa = "wa";
     const fa = "fa";
+    // Formatar data_criacao como texto ISO com timezone -03:00 (São Paulo) para evitar
+    // que o driver pg interprete o timestamp como UTC no servidor Vercel.
+    // O banco armazena timestamps sem timezone que representam horário local de SP.
+    const dataCriacaoFormatted = `TO_CHAR(${wa}.${q(col.data_criacao)}, 'YYYY-MM-DD"T"HH24:MI:SS"-03:00"') AS ${q(col.data_criacao)}`;
     const selectList = [
       `${wa}.${q(col.nome)}`,
       `${wa}.${q(col.sobrenome)}`,
-      `${wa}.${q(col.data_criacao)}`,
+      dataCriacaoFormatted,
       `${wa}.${q(col.source_id)}`,
       `${wa}.${q(col.ctwaclid)}`,
       `${wa}.${q(col.plataforma)}`,
