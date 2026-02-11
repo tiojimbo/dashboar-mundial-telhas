@@ -1213,13 +1213,27 @@ type LeadsModalProps = {
   champions?: Champions;
 };
 
+/**
+ * Normaliza timestamp do banco de dados para Date, tratando valores sem timezone como BRT (-03:00).
+ * PostgreSQL 'timestamp without time zone' retorna valores como "2026-02-11 09:22:00" ou "2026-02-11T09:22:00.123456".
+ */
+function parseDbTimestamp(value: string): Date {
+  let toParse = value.trim();
+  // Se não tem timezone (Z ou +/-HH:MM), assume que é horário de São Paulo (BRT = UTC-3)
+  if (!/Z|[+-]\d{2}:?\d{2}$/.test(toParse)) {
+    // Remove microssegundos se presentes (ex: .123456)
+    toParse = toParse.replace(/\.\d+$/, "");
+    // Garante formato ISO com T separador
+    toParse = toParse.replace(" ", "T");
+    // Adiciona offset de São Paulo
+    toParse += "-03:00";
+  }
+  return new Date(toParse);
+}
+
 /** Formata data/hora em horário de São Paulo. Se o valor não tem timezone, trata como BRT (-03:00). */
 function fmtDateTime(value: string): string {
-  let toParse = value.trim();
-  if (!/Z|[+-]\d{2}:?\d{2}$/.test(toParse) && /^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}/.test(toParse)) {
-    toParse = toParse.replace(" ", "T") + "-03:00";
-  }
-  const d = new Date(toParse);
+  const d = parseDbTimestamp(value);
   if (Number.isNaN(d.getTime())) return value;
   return d.toLocaleString("pt-BR", {
     day: "2-digit",
@@ -1263,7 +1277,7 @@ function todayBrazil(): string {
 
 function leadDateInBrazil(dataCriacao: string): string {
   try {
-    const d = new Date(dataCriacao);
+    const d = parseDbTimestamp(dataCriacao);
     if (Number.isNaN(d.getTime())) return "";
     return new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo" }).format(d);
   } catch {
