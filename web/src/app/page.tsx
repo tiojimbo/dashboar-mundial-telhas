@@ -243,7 +243,7 @@ export default function Home() {
   const [leadsForUtm, setLeadsForUtm] = useState<LeadMessageRow[] | null>(null);
   type DailyRow = { date: string; spend: number; leads: number; cpl: number | null };
   const [dailyMetrics, setDailyMetrics] = useState<DailyRow[]>([]);
-  type GeneralPeriod = null | "este_mes" | "14dias" | "7dias" | "3dias";
+  type GeneralPeriod = null | "este_mes" | "14dias" | "7dias" | "3dias" | "ontem";
   const [generalPeriod, setGeneralPeriod] = useState<GeneralPeriod>(null);
   const metricsLoadingRef = useRef(false);
   const metaLoadingRef = useRef(false);
@@ -638,6 +638,11 @@ export default function Home() {
       const start = new Date(today.getTime() - 6 * oneDay);
       return { start: fmt(start), end: todayStr };
     }
+    if (p === "ontem") {
+      const yesterday = new Date(today.getTime() - oneDay);
+      const yesterdayStr = fmt(yesterday);
+      return { start: yesterdayStr, end: yesterdayStr };
+    }
     const start = new Date(today.getTime() - 2 * oneDay);
     return { start: fmt(start), end: todayStr };
   };
@@ -733,6 +738,7 @@ export default function Home() {
                   { value: "14dias" as const, label: "Últimos 14 dias" },
                   { value: "7dias" as const, label: "Últimos 7 dias" },
                   { value: "3dias" as const, label: "Últimos 3 dias" },
+                  { value: "ontem" as const, label: "Ontem" },
                 ] as const
               ).map(({ value, label }) => (
                 <button
