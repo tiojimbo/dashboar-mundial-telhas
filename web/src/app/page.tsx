@@ -560,11 +560,24 @@ export default function Home() {
   const termSectionRows: UtmTermRow[] = termAggregated.map((r) => ({ utmTerm: r.name, quantidade: r.quantidade }));
   const campaignAggregated = aggregateByField(leadsForUtm, "campanha");
   const campaignSectionRowsFromLeads: UtmCampaignRow[] = campaignAggregated.map((r) => ({ utmCampaign: r.name, quantidade: r.quantidade }));
-  // Prefer API (facebook_ads) so todas as campanhas do banco aparecem; fallback para agregação por leads
+  
+  // Mesclar dados da API com quantidades reais dos leads para garantir consistência com o modal
+  // A API fornece nomes e métricas (spend, impressions, clicks), mas a quantidade vem dos leads
+  const campaignQuantitiesMap = new Map<string, number>();
+  campaignSectionRowsFromLeads.forEach((r) => {
+    campaignQuantitiesMap.set(r.utmCampaign.trim(), r.quantidade);
+  });
+  
   const campaignSectionRows: UtmCampaignRow[] =
     metaCampaignsApi?.items?.length
-      ? metaCampaignsApi.items.map((i) => ({ utmCampaign: i.name, quantidade: i.quantidade }))
+      ? metaCampaignsApi.items.map((i) => {
+          const name = (i.name ?? "").trim();
+          // Usar quantidade dos leads se disponível, senão usar da API (para campanhas sem leads ainda)
+          const quantidade = campaignQuantitiesMap.get(name) ?? i.quantidade;
+          return { utmCampaign: name, quantidade };
+        })
       : campaignSectionRowsFromLeads;
+  
   const contentAggregated = aggregateByField(leadsForUtm, "conjunto");
   const contentSectionRows: UtmContentRow[] = contentAggregated.map((r) => ({ utmContent: r.name, quantidade: r.quantidade }));
 
