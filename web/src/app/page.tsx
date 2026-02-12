@@ -655,10 +655,12 @@ export default function Home() {
       })
     : dailyMetrics;
 
-  const dailyWithCpl = dailyInPeriod.filter((d) => d.leads > 0 && d.cpl != null);
-  const bestDay = dailyWithCpl.length > 0 ? dailyWithCpl.reduce((a, b) => (a.cpl! <= b.cpl! ? a : b)) : null;
-  const worstDay = dailyWithCpl.length > 0 ? dailyWithCpl.reduce((a, b) => (a.cpl! >= b.cpl! ? a : b)) : null;
-  const maxSpendDay = dailyInPeriod.length > 0 ? dailyInPeriod.reduce((a, b) => (a.spend >= b.spend ? a : b)) : null;
+  // Para os cards de "Melhor Dia", "Pior Dia" e "Maior Investimento", sempre usar todos os dados
+  // (não filtrar por período, mesmo quando "ontem" está selecionado)
+  const dailyWithCplAll = dailyMetrics.filter((d) => d.leads > 0 && d.cpl != null);
+  const bestDay = dailyWithCplAll.length > 0 ? dailyWithCplAll.reduce((a, b) => (a.cpl! <= b.cpl! ? a : b)) : null;
+  const worstDay = dailyWithCplAll.length > 0 ? dailyWithCplAll.reduce((a, b) => (a.cpl! >= b.cpl! ? a : b)) : null;
+  const maxSpendDay = dailyMetrics.length > 0 ? dailyMetrics.reduce((a, b) => (a.spend >= b.spend ? a : b)) : null;
 
   const periodAgg =
     periodRange && dailyInPeriod.length > 0
