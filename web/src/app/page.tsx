@@ -886,7 +886,7 @@ export default function Home() {
                         onClick={() => openTermModal(row)}
                         className="cursor-pointer border-t border-slate-100 transition-colors hover:bg-slate-50"
                       >
-                        <td className="max-w-0 truncate py-3 pr-4 pl-0 font-medium text-slate-900" title={row.utmTerm}>
+                        <td className="break-words py-3 pr-4 pl-0 font-medium text-slate-900" title={row.utmTerm}>
                           {row.utmTerm}
                         </td>
                         <td className="whitespace-nowrap py-3 pl-2 pr-5 text-right font-semibold text-slate-800">
@@ -960,7 +960,7 @@ export default function Home() {
                         onClick={() => openCampaignModal(row)}
                         className="cursor-pointer border-t border-slate-100 transition-colors hover:bg-slate-50"
                       >
-                        <td className="max-w-0 truncate py-3 pr-4 pl-0 font-medium text-slate-900" title={row.utmCampaign}>
+                        <td className="break-words py-3 pr-4 pl-0 font-medium text-slate-900" title={row.utmCampaign}>
                           {row.utmCampaign}
                         </td>
                         <td className="whitespace-nowrap py-3 pl-2 pr-5 text-right font-semibold text-slate-800">
@@ -1034,7 +1034,7 @@ export default function Home() {
                         onClick={() => openContentModal(row)}
                         className="cursor-pointer border-t border-slate-100 transition-colors hover:bg-slate-50"
                       >
-                        <td className="max-w-0 truncate py-3 pr-4 pl-0 font-medium text-slate-900" title={row.utmContent}>
+                        <td className="break-words py-3 pr-4 pl-0 font-medium text-slate-900" title={row.utmContent}>
                           {row.utmContent}
                         </td>
                         <td className="whitespace-nowrap py-3 pl-2 pr-5 text-right font-semibold text-slate-800">
